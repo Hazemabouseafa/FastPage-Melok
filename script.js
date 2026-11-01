@@ -1,5 +1,5 @@
 /**
- * ملوك الزفاف لتأجير السيارات - FastPage-Melok
+ * ملوك الزفاف لتأجير السيارات - Ultra Chic Royal Facade
  * إدارة: حسام حسن | هاتف وواتساب: +20 11 54345092
  */
 
@@ -10,39 +10,37 @@ document.addEventListener('DOMContentLoaded', () => {
         currentYearEl.textContent = new Date().getFullYear();
     }
 
-    // 2. Navbar Scroll Glass Effect
-    const navbar = document.getElementById('navbar');
+    // 2. Navbar Scroll Dynamic Glass
+    const nav = document.getElementById('headerNav');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 40) {
-            navbar.style.background = 'rgba(8, 9, 12, 0.95)';
-            navbar.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.6)';
+        if (window.scrollY > 30) {
+            nav.style.background = 'rgba(6, 7, 9, 0.96)';
+            nav.style.boxShadow = '0 12px 35px rgba(0, 0, 0, 0.7)';
         } else {
-            navbar.style.background = 'rgba(8, 9, 12, 0.85)';
-            navbar.style.boxShadow = 'none';
+            nav.style.background = 'rgba(6, 7, 9, 0.85)';
+            nav.style.boxShadow = 'none';
         }
     }, { passive: true });
 
-    // 3. Quick Booking Form submission to WhatsApp
-    const bookingForm = document.getElementById('quickBookingForm');
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', (e) => {
+    // 3. Royal Instant Booking to WhatsApp
+    const royalForm = document.getElementById('royalBookingForm');
+    if (royalForm) {
+        royalForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const carChoice = document.getElementById('carChoice').value.trim();
+            const categoryChoice = document.getElementById('categoryChoice').value.trim();
             const weddingDate = document.getElementById('weddingDate').value.trim();
-            const location = document.getElementById('location').value.trim();
-            const notes = document.getElementById('notes').value.trim();
+            const locationCity = document.getElementById('locationCity').value.trim();
 
             const message = 
-`👑 *طلب حجز سيارة زفاف - ملوك الزفاف* 👑
+`👑 *طلب استفسار وحجز - ملوك الزفاف* 👑
 --------------------------------
-👤 *إلى:* الإدارة (أ. حسام حسن)
-🚗 *السيارة المطلوبة:* ${carChoice}
-📅 *تاريخ الزفاف:* ${weddingDate || 'غير محدد'}
-📍 *المكان / المحافظة:* ${location || 'غير محدد'}
-${notes ? `📝 *ملاحظات خاصة:* ${notes}` : ''}
+👤 *إلى:* الإدارة العامة (أ. حسام حسن)
+✨ *الفئة المطلوبة:* ${categoryChoice}
+📅 *تاريخ ليلة العمر:* ${weddingDate || 'غير محدد'}
+📍 *المكان / المحافظة:* ${locationCity || 'غير محدد'}
 --------------------------------
-أرجو تأكيد إمكانية الحجز والأسعار والتفاصيل. شكراً لكم!`;
+أود معرفة الأسعار المتاحة وتأكيد الحجز. شكراً جزيلاً!`;
 
             const encodedMessage = encodeURIComponent(message);
             const waUrl = `https://wa.me/201154345092?text=${encodedMessage}`;
@@ -51,80 +49,73 @@ ${notes ? `📝 *ملاحظات خاصة:* ${notes}` : ''}
         });
     }
 
-    // 4. Copy Phone Number Feature with Toast Notification
-    const copyBox = document.getElementById('copyPhoneBox');
-    const copyBtn = document.getElementById('copyBtn');
-    const copyText = document.getElementById('copyText');
+    // 4. One-click Copy Phone Number with Toast
+    const phoneBox = document.getElementById('phoneBox');
+    const copyActionBtn = document.getElementById('copyActionBtn');
+    const copyFeedback = document.getElementById('copyFeedback');
     const toast = document.getElementById('toastNotification');
-    const phoneNumber = '+201154345092';
+    const directPhone = '+201154345092';
 
     function copyToClipboard(text) {
         if (navigator.clipboard && window.isSecureContext) {
             return navigator.clipboard.writeText(text);
         } else {
-            // Fallback for older browsers
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            textArea.style.position = 'fixed';
-            textArea.style.opacity = '0';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
             try {
                 document.execCommand('copy');
-                document.body.removeChild(textArea);
+                document.body.removeChild(ta);
                 return Promise.resolve();
             } catch (err) {
-                document.body.removeChild(textArea);
+                document.body.removeChild(ta);
                 return Promise.reject(err);
             }
         }
     }
 
-    function showToast(msg) {
+    function showToastNotification(msg) {
         if (!toast) return;
         toast.textContent = msg;
         toast.classList.add('show');
         setTimeout(() => {
             toast.classList.remove('show');
-        }, 3200);
+        }, 3000);
     }
 
-    if (copyBtn) {
-        copyBtn.addEventListener('click', (e) => {
+    function handleCopy() {
+        copyToClipboard(directPhone).then(() => {
+            if (copyFeedback) copyFeedback.textContent = 'تم النسخ!';
+            showToastNotification(`تم نسخ رقم أ. حسام حسن: ${directPhone}`);
+            setTimeout(() => {
+                if (copyFeedback) copyFeedback.textContent = 'نسخ الرقم';
+            }, 2500);
+        }).catch(() => {
+            showToastNotification(`الرقم: ${directPhone}`);
+        });
+    }
+
+    if (copyActionBtn) {
+        copyActionBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            copyToClipboard(phoneNumber).then(() => {
-                copyText.textContent = 'تم النسخ!';
-                showToast(`تم نسخ رقم أ. حسام حسن: ${phoneNumber}`);
-                setTimeout(() => {
-                    copyText.textContent = 'نسخ';
-                }, 2500);
-            }).catch(() => {
-                showToast(`الرقم المباشر: ${phoneNumber}`);
-            });
+            handleCopy();
         });
     }
 
-    if (copyBox) {
-        copyBox.addEventListener('click', () => {
-            copyToClipboard(phoneNumber).then(() => {
-                if (copyText) copyText.textContent = 'تم النسخ!';
-                showToast(`تم نسخ رقم أ. حسام حسن: ${phoneNumber}`);
-                setTimeout(() => {
-                    if (copyText) copyText.textContent = 'نسخ';
-                }, 2500);
-            }).catch(() => {
-                showToast(`الرقم المباشر: ${phoneNumber}`);
-            });
-        });
+    if (phoneBox) {
+        phoneBox.addEventListener('click', handleCopy);
     }
 
-    // 5. Hide floating WhatsApp bubble after 7 seconds so it doesn't distract
-    const waBubble = document.getElementById('waBubble');
-    if (waBubble) {
+    // 5. Floating WhatsApp Tooltip Fade
+    const waTooltip = document.getElementById('waTooltip');
+    if (waTooltip) {
         setTimeout(() => {
-            waBubble.style.transition = 'opacity 0.6s ease';
-            waBubble.style.opacity = '0.85';
-        }, 7000);
+            waTooltip.style.transition = 'opacity 0.6s ease';
+            waTooltip.style.opacity = '0.8';
+        }, 6000);
     }
 });
