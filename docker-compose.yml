@@ -1,0 +1,15 @@
+services:
+  melok-landing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fastpage-melok:latest
+    container_name: fastpage_melok_web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
