@@ -22,25 +22,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: true });
 
-    // 3. Royal Instant Booking to WhatsApp
+    // 3. Royal Instant Booking to WhatsApp (No car types)
     const royalForm = document.getElementById('royalBookingForm');
     if (royalForm) {
         royalForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const categoryChoice = document.getElementById('categoryChoice').value.trim();
+            const clientName = document.getElementById('clientName').value.trim();
             const weddingDate = document.getElementById('weddingDate').value.trim();
             const locationCity = document.getElementById('locationCity').value.trim();
 
             const message = 
-`👑 *طلب استفسار وحجز - ملوك الزفاف* 👑
+`👑 *طلب حجز واستفسار - ملوك الزفاف* 👑
 --------------------------------
 👤 *إلى:* الإدارة العامة (أ. حسام حسن)
-✨ *الفئة المطلوبة:* ${categoryChoice}
+🤵 *الاسم:* ${clientName || 'عميل محترم'}
 📅 *تاريخ ليلة العمر:* ${weddingDate || 'غير محدد'}
 📍 *المكان / المحافظة:* ${locationCity || 'غير محدد'}
 --------------------------------
-أود معرفة الأسعار المتاحة وتأكيد الحجز. شكراً جزيلاً!`;
+أود الاستفسار عن الأسعار وتأكيد إمكانية الحجز. شكراً جزيلاً!`;
 
             const encodedMessage = encodeURIComponent(message);
             const waUrl = `https://wa.me/201154345092?text=${encodedMessage}`;
